@@ -15,11 +15,11 @@ Docker Architecture
 
 Docker Run
 ===========
-    Containers:
+  * Containers:
       sudo docker ps
       sudo docker ps -a (also list not running containers)
 
-    Images:
+  * Images:
       docker images
       docker pull Ubuntu
       docker pull Ubuntu:14.04 (versioned)
@@ -33,7 +33,7 @@ Docker Run
           <missing>           2 days ago          /bin/sh -c set -xe   && echo '#!/bin/sh' >...   745 B               
           <missing>           2 days ago          /bin/sh -c #(nop) ADD file:efb254bc677d66d...   130 MB  
 
-    Docker Run:
+  * Docker Run:
       D/C need to be run as daemons -- with '-d' option
         docker run -it ubuntu /bin/bash (lands in bash shell while running in i=interactive)
         docker run -d fedora sleep 1000 (running as a daemon)
