@@ -1,4 +1,3 @@
 Docker Run
-    D/C need to be run as deamons
+    D/C need to be run as daemons.
 Docker orchestration
-
