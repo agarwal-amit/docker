@@ -13,6 +13,11 @@ Docker Architecture
 
   *  /var/lib/docker <-- is where the containers are persisted.
 
+Create Docker Images
+====================
+  Use of Docker Files
+    
+
 Docker Run
 ===========
     Containers:
@@ -70,6 +75,16 @@ Administration
   docker stats
     CONTAINER           CPU %               MEM USAGE / LIMIT       MEM %               NET I/O             BLOCK I/O           PIDS
     c629626e483a        0.28%               5.973 MiB / 1.952 GiB   0.30%               782 B / 788 B       0 B / 0 B           82
+
+  docker top <container-id>  //list all the processes within  
+
+  Lifecycle -->
+    Run = Create + Start
+      Running
+        <stop><kill>
+          Exited
+            <rm>
+              Removed
 
 
 Orchestration
