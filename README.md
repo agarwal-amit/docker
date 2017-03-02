@@ -15,11 +15,11 @@ Docker Architecture
 
 Docker Run
 ===========
-  * Containers:
+    Containers:
       sudo docker ps
       sudo docker ps -a (also list not running containers)
 
-  * Images:
+    Images:
       docker images
       docker pull Ubuntu
       docker pull Ubuntu:14.04 (versioned)
@@ -33,7 +33,7 @@ Docker Run
           <missing>           2 days ago          /bin/sh -c set -xe   && echo '#!/bin/sh' >...   745 B               
           <missing>           2 days ago          /bin/sh -c #(nop) ADD file:efb254bc677d66d...   130 MB  
 
-  * Docker Run:
+    Docker Run:
       D/C need to be run as daemons -- with '-d' option
         docker run -it ubuntu /bin/bash (lands in bash shell while running in i=interactive)
         docker run -d fedora sleep 1000 (running as a daemon)
@@ -55,6 +55,22 @@ Docker Run
       docker logs jagjit-singh-1
           JAGJIT_SINGH_LIVES_ON
 
+    Docker image can be run without a command
+      docker run -d httpd (no command here-- the author needs to define a implicit command)
 
-Docker Orchestration
-====================
+
+Administration
+==============
+  docker stats
+
+  docker ps
+    CONTAINER ID        IMAGE               COMMAND              CREATED              STATUS              PORTS               NAMES
+    c629626e483a        httpd               "httpd-foreground"   About a minute ago   Up About a minute   80/tcp              vigilant_mclean
+
+  docker stats
+    CONTAINER           CPU %               MEM USAGE / LIMIT       MEM %               NET I/O             BLOCK I/O           PIDS
+    c629626e483a        0.28%               5.973 MiB / 1.952 GiB   0.30%               782 B / 788 B       0 B / 0 B           82
+
+
+Orchestration
+=============
