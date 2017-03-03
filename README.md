@@ -15,19 +15,19 @@ Docker Architecture
 
 Create Docker Images
 ====================
-  Use of Docker Files -- text file/plain text
-  format:
-    FROM -- base image (generally the OS)
-    RUN -- build time instruction (not run time)
+    Use of Docker Files -- text file/plain text
+      format:
+        FROM -- base image (generally the OS)
+        RUN -- build time instruction (not run time)
 
-  Build:
-    docker build -t "image-name:v1" .   ("image:version" Dockerfile_location)
+    Build:
+      docker build -t "image-name:v1" .   ("image:version" Dockerfile_location)
 
-  Build Cache:
-    -- Used when additional instruction are being added to a Dockerfile.
-    -- Build cache is broken when we EDIT existing instructions in a Dockerfile.
+    Build Cache:
+      -- Used when additional instruction are being added to a Dockerfile.
+      -- Build cache is broken when we EDIT existing instructions in a Dockerfile.
 
-    Build context = directory with the Dockerfile
+      Build context = directory with the Dockerfile
 
 
 Docker Run
@@ -99,9 +99,9 @@ Docker Run
           CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS              PORTS               NAMES
           9c1a8d702692        apache2:v1          "apache2ctl -D FOR..."   About a minute ago   Up About a minute                       lucid_bell
 
-   Port Configurations: //expose a service to outside the container
-     Right side port: Container's
-     Left side port: Host's
+     Port Configurations: //expose a service to outside the container
+       Right side port: Container's
+       Left side port: Host's
 
      * Uses NAT-ing and docker engine is responsible to add IP routes on the host.
 
@@ -122,6 +122,19 @@ Docker Run
     Add CMD instruction to Dockerfile to avoid entering the command in the 'docker run ..' operation
       Dockerfile:
         CMD apache2ctl -D FOREGROUND
+
+    Dockerfile COPY instruction:
+          COPY <source> <destination>
+
+
+    Docker instruction
+      ENV - set environment variables as part of the Dockerfile on the Container
+      ENTRYPOINT -
+
+    CMD instruction styles:
+      CMD apache2ctl -D FOREGROUND  // freeflowing command style    -- runs process child of /bin/sh
+      CMD ["apache2ctl", "-D", "FOREGROUND"]   // json array style  -- runs independently
+
 
 
 Administration
@@ -167,6 +180,11 @@ Administration
         root       105  0.0  0.1  18168  1856 ?        Ss   05:40   0:00 /bin/bash
         root       118  0.0  0.1  15560  1132 ?        R+   05:40   0:00 ps -waux
 
+    Docker Registries
+      Public: hub.docker.com
+
+    Docker stop
+      To gracefully kill containers
 
 
 Orchestration
