@@ -15,8 +15,14 @@ Docker Architecture
 
 Create Docker Images
 ====================
-  Use of Docker Files
-    
+  Use of Docker Files -- text file/plain text
+  format:
+    FROM -- base image (generally the OS)
+    RUN -- build time instruction (not run time)
+
+  Build:
+    docker build -t "image-name:v1" .   (image:version)
+
 
 Docker Run
 ===========
@@ -37,6 +43,14 @@ Docker Run
           <missing>           2 days ago          /bin/sh -c rm -rf /var/lib/apt/lists/*          0 B                 
           <missing>           2 days ago          /bin/sh -c set -xe   && echo '#!/bin/sh' >...   745 B               
           <missing>           2 days ago          /bin/sh -c #(nop) ADD file:efb254bc677d66d...   130 MB  
+
+    Lifecycle -->
+      Run = Create + Start
+        Running
+          <stop><kill>
+            Exited
+              <rm>
+                Removed
 
     Docker Run:
       D/C need to be run as daemons -- with '-d' option
@@ -66,25 +80,19 @@ Docker Run
 
 Administration
 ==============
-  docker stats
+    docker stats
 
-  docker ps
-    CONTAINER ID        IMAGE               COMMAND              CREATED              STATUS              PORTS               NAMES
-    c629626e483a        httpd               "httpd-foreground"   About a minute ago   Up About a minute   80/tcp              vigilant_mclean
+    docker ps
+      CONTAINER ID        IMAGE               COMMAND              CREATED              STATUS              PORTS               NAMES
+      c629626e483a        httpd               "httpd-foreground"   About a minute ago   Up About a minute   80/tcp              vigilant_mclean
 
-  docker stats
-    CONTAINER           CPU %               MEM USAGE / LIMIT       MEM %               NET I/O             BLOCK I/O           PIDS
-    c629626e483a        0.28%               5.973 MiB / 1.952 GiB   0.30%               782 B / 788 B       0 B / 0 B           82
+    docker stats
+      CONTAINER           CPU %               MEM USAGE / LIMIT       MEM %               NET I/O             BLOCK I/O           PIDS
+      c629626e483a        0.28%               5.973 MiB / 1.952 GiB   0.30%               782 B / 788 B       0 B / 0 B           82
 
-  docker top <container-id>  //list all the processes within  
+    docker top <container-id>  //list all the processes within  
 
-  Lifecycle -->
-    Run = Create + Start
-      Running
-        <stop><kill>
-          Exited
-            <rm>
-              Removed
+
 
 
 Orchestration
