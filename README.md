@@ -129,7 +129,11 @@ Docker Run
 
     Docker instruction
       ENV - set environment variables as part of the Dockerfile on the Container
-      ENTRYPOINT -
+      Another way to inject an environment variable is the option "-e"
+        docker run -d -e MAGIC=CISCO
+
+      ENTRYPOINT - Defines a command. Can't be overridden at the run time //docker run <..> command
+                  //In case defined in docker run, the command is passed as an arguement to ENTRYPOINT.
 
     CMD instruction styles:
       CMD apache2ctl -D FOREGROUND  // freeflowing command style    -- runs process child of /bin/sh
