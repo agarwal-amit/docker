@@ -99,45 +99,6 @@ Docker Run
           CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS              PORTS               NAMES
           9c1a8d702692        apache2:v1          "apache2ctl -D FOR..."   About a minute ago   Up About a minute                       lucid_bell
 
-
-
-    
-hadoop@ip-172-31-57-220:~/amitaga/lab/apache$ sudo docker exec -it 9c1a8d702692
-"docker exec" requires at least 2 argument(s).
-See 'docker exec --help'.
-
-Usage:  docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
-
-Run a command in a running container
-hadoop@ip-172-31-57-220:~/amitaga/lab/apache$ sudo docker exec -it 9c1a8d702692 /bin/bash
-root@9c1a8d702692:/# ps -waux
-USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-root         1  0.0  0.0   4440   700 ?        Ss   05:31   0:00 /bin/sh /usr/sbin/apache2ctl -D FOREGROUND
-root        13  0.0  0.3  71300  3300 ?        S    05:31   0:00 /usr/sbin/apache2 -D FOREGROUND
-www-data    14  0.0  0.4 360464  4260 ?        Sl   05:31   0:00 /usr/sbin/apache2 -D FOREGROUND
-www-data    15  0.0  0.4 360464  4260 ?        Sl   05:31   0:00 /usr/sbin/apache2 -D FOREGROUND
-root        70  0.0  0.1  18168  1844 ?        Ss   05:33   0:00 /bin/bash
-root        83  0.0  0.1  15560  1132 ?        R+   05:34   0:00 ps -waux
-root@9c1a8d702692:/#
-
-Inject a service in a running container
-hadoop@ip-172-31-57-220:~/amitaga/lab/apache$ sudo docker exec -d 9c1a8d702692 sleep 1000
-
-root@9c1a8d702692:/# ps -waux
-USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-root         1  0.0  0.0   4440   700 ?        Ss   05:31   0:00 /bin/sh /usr/sbin/apache2ctl -D FOREGROUND
-root        13  0.0  0.3  71300  3300 ?        S    05:31   0:00 /usr/sbin/apache2 -D FOREGROUND
-www-data    14  0.0  0.4 360464  4260 ?        Sl   05:31   0:00 /usr/sbin/apache2 -D FOREGROUND
-www-data    15  0.0  0.4 360464  4260 ?        Sl   05:31   0:00 /usr/sbin/apache2 -D FOREGROUND
-root       101  0.0  0.0   4340   360 ?        Ss   05:40   0:00 sleep 1000
-root       105  0.0  0.1  18168  1856 ?        Ss   05:40   0:00 /bin/bash
-root       118  0.0  0.1  15560  1132 ?        R+   05:40   0:00 ps -waux
-root@9c1a8d702692:/# netstat -nltp
-Active Internet connections (only servers)
-Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
-tcp6       0      0 :::80                   :::*                    LISTEN      13/apache2
-root@9c1a8d702692:/#
-
    Port Configurations: //expose a service to outside the container
      Right side port: Container's
      Left side port: Host's
@@ -180,6 +141,31 @@ Administration
     PID=1 in Linux is the Parent of boot process. In a container it the service's PID.
 
     docker attach //attaches to PID 1 inside the container. In real world this may not be a PID of container's shell
+
+    Login into a Container shell:
+      docker exec
+        docker exec -it 9c1a8d702692 /bin/bash
+        root@9c1a8d702692:/# ps -waux
+        USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+        root         1  0.0  0.0   4440   700 ?        Ss   05:31   0:00 /bin/sh /usr/sbin/apache2ctl -D FOREGROUND
+        root        13  0.0  0.3  71300  3300 ?        S    05:31   0:00 /usr/sbin/apache2 -D FOREGROUND
+        www-data    14  0.0  0.4 360464  4260 ?        Sl   05:31   0:00 /usr/sbin/apache2 -D FOREGROUND
+        www-data    15  0.0  0.4 360464  4260 ?        Sl   05:31   0:00 /usr/sbin/apache2 -D FOREGROUND
+        root        70  0.0  0.1  18168  1844 ?        Ss   05:33   0:00 /bin/bash
+        root        83  0.0  0.1  15560  1132 ?        R+   05:34   0:00 ps -waux
+
+
+      Inject a command in a running container:
+        docker exec -d 9c1a8d702692 sleep 1000
+        root@9c1a8d702692:/# ps -waux
+        USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+        root         1  0.0  0.0   4440   700 ?        Ss   05:31   0:00 /bin/sh /usr/sbin/apache2ctl -D FOREGROUND
+        root        13  0.0  0.3  71300  3300 ?        S    05:31   0:00 /usr/sbin/apache2 -D FOREGROUND
+        www-data    14  0.0  0.4 360464  4260 ?        Sl   05:31   0:00 /usr/sbin/apache2 -D FOREGROUND
+        www-data    15  0.0  0.4 360464  4260 ?        Sl   05:31   0:00 /usr/sbin/apache2 -D FOREGROUND
+        root       101  0.0  0.0   4340   360 ?        Ss   05:40   0:00 sleep 1000
+        root       105  0.0  0.1  18168  1856 ?        Ss   05:40   0:00 /bin/bash
+        root       118  0.0  0.1  15560  1132 ?        R+   05:40   0:00 ps -waux
 
 
 
