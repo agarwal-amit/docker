@@ -21,7 +21,13 @@ Create Docker Images
     RUN -- build time instruction (not run time)
 
   Build:
-    docker build -t "image-name:v1" .   (image:version)
+    docker build -t "image-name:v1" .   ("image:version" Dockerfile_location)
+
+  Build Cache:
+    -- Used when additional instruction are being added to a Dockerfile.
+    -- Build cache is broken when we EDIT existing instructions in a Dockerfile.
+
+    Build context = directory with the Dockerfile
 
 
 Docker Run
@@ -77,6 +83,85 @@ Docker Run
     Docker image can be run without a command
       docker run -d httpd (no command here-- the author needs to define a implicit command)
 
+    *Case Study*
+      Start httpd as a background service
+
+      Dockerfile:   
+        RUN apt-get install apache2 -y
+        <DO not run the httpd service using instruction in the Dockerfile>
+
+      Run:
+        docker run -d apache2:v1 apache2ctl -D FOREGROUND
+        9c1a8d702692d057260a912285271216902048fe50226634dc4d90d707b5c012
+
+      Check:
+        docker ps
+          CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS              PORTS               NAMES
+          9c1a8d702692        apache2:v1          "apache2ctl -D FOR..."   About a minute ago   Up About a minute                       lucid_bell
+
+
+
+    
+hadoop@ip-172-31-57-220:~/amitaga/lab/apache$ sudo docker exec -it 9c1a8d702692
+"docker exec" requires at least 2 argument(s).
+See 'docker exec --help'.
+
+Usage:  docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
+
+Run a command in a running container
+hadoop@ip-172-31-57-220:~/amitaga/lab/apache$ sudo docker exec -it 9c1a8d702692 /bin/bash
+root@9c1a8d702692:/# ps -waux
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         1  0.0  0.0   4440   700 ?        Ss   05:31   0:00 /bin/sh /usr/sbin/apache2ctl -D FOREGROUND
+root        13  0.0  0.3  71300  3300 ?        S    05:31   0:00 /usr/sbin/apache2 -D FOREGROUND
+www-data    14  0.0  0.4 360464  4260 ?        Sl   05:31   0:00 /usr/sbin/apache2 -D FOREGROUND
+www-data    15  0.0  0.4 360464  4260 ?        Sl   05:31   0:00 /usr/sbin/apache2 -D FOREGROUND
+root        70  0.0  0.1  18168  1844 ?        Ss   05:33   0:00 /bin/bash
+root        83  0.0  0.1  15560  1132 ?        R+   05:34   0:00 ps -waux
+root@9c1a8d702692:/#
+
+Inject a service in a running container
+hadoop@ip-172-31-57-220:~/amitaga/lab/apache$ sudo docker exec -d 9c1a8d702692 sleep 1000
+
+root@9c1a8d702692:/# ps -waux
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         1  0.0  0.0   4440   700 ?        Ss   05:31   0:00 /bin/sh /usr/sbin/apache2ctl -D FOREGROUND
+root        13  0.0  0.3  71300  3300 ?        S    05:31   0:00 /usr/sbin/apache2 -D FOREGROUND
+www-data    14  0.0  0.4 360464  4260 ?        Sl   05:31   0:00 /usr/sbin/apache2 -D FOREGROUND
+www-data    15  0.0  0.4 360464  4260 ?        Sl   05:31   0:00 /usr/sbin/apache2 -D FOREGROUND
+root       101  0.0  0.0   4340   360 ?        Ss   05:40   0:00 sleep 1000
+root       105  0.0  0.1  18168  1856 ?        Ss   05:40   0:00 /bin/bash
+root       118  0.0  0.1  15560  1132 ?        R+   05:40   0:00 ps -waux
+root@9c1a8d702692:/# netstat -nltp
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp6       0      0 :::80                   :::*                    LISTEN      13/apache2
+root@9c1a8d702692:/#
+
+   Port Configurations: //expose a service to outside the container
+     Right side port: Container's
+     Left side port: Host's
+
+     * Uses NAT-ing and docker engine is responsible to add IP routes on the host.
+
+     Dockerfile -- right side port defn.
+      RUN apt-get update
+      RUN apt-get install apache2 -y
+      EXPOSE 80/tcp
+
+    Run --  docker run -d -p 8080:80 apache2:v2 apache2ctl -D FOREGROUND
+    Check -- netstat -nltp      
+      Active Internet connections (only servers)
+      Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+      tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      996/sshd
+      tcp6       0      0 :::8080                 :::*                    LISTEN      4901/docker-proxy
+      tcp6       0      0 :::80                   :::*                    LISTEN      3237/apache2
+      tcp6       0      0 :::22                   :::*                    LISTEN      996/ssh
+
+    Add CMD instruction to Dockerfile to avoid entering the command in the 'docker run ..' operation
+      Dockerfile:
+        CMD apache2ctl -D FOREGROUND
+
 
 Administration
 ==============
@@ -92,6 +177,9 @@ Administration
 
     docker top <container-id>  //list all the processes within  
 
+    PID=1 in Linux is the Parent of boot process. In a container it the service's PID.
+
+    docker attach //attaches to PID 1 inside the container. In real world this may not be a PID of container's shell
 
 
 
