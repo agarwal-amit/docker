@@ -197,4 +197,47 @@ Networking
     Container ports can be assigned explicitly or we may let Docker randomly assign one to the process.
       P (uppercase) - random
       p (lowercase) - explicit
-      
+
+    List the network bridges
+      host$ brctl show
+        bridge name	bridge id		STP enabled	interfaces
+        docker0		8000.024209fa8aab	no		
+
+    Network Bridge is installed on the host machine. The docker instance will share the network resources using the bridge.    
+
+    ubuntu@ip-172-31-35-84:~$ sudo docker run --name -p 80  myweb -d  httpd
+    ubuntu@ip-172-31-35-84:/$ sudo docker ps
+      CONTAINER ID        IMAGE               COMMAND              CREATED             STATUS              PORTS                   NAMES
+      efcfd81328e6        httpd               "httpd-foreground"   15 seconds ago      Up 15 seconds       0.0.0.0:32768->80/tcp   myweb
+
+      ubuntu@ip-172-31-35-84:/$ sudo docker port efcfd81328e6
+      80/tcp -> 0.0.0.0:32768
+
+
+    Linking two containers
+    ======================
+      Start container 1:
+        ubuntu@ip-172-31-35-84:~$ sudo docker run --name myweb -p 80  -d  httpd
+
+      Start Container 2 while linked to Container 1:
+      docker run --name myweb1 -p 80 --link myweb -d httpd  
+      //this will create a entry in the etc/host with the name of the instance
+      //in docker automation scripts we should use these hostnames
+
+      ubuntu@ip-172-31-35-84:~$ sudo docker run --name myweb1 -p 80 --link myweb -it httpd /bin/bash
+      root@75f46da88f58:/usr/local/apache2# ping myweb
+      PING myweb (172.17.0.3): 56 data bytes
+      64 bytes from 172.17.0.3: icmp_seq=0 ttl=64 time=0.090 ms
+      64 bytes from 172.17.0.3: icmp_seq=1 ttl=64 time=0.069 ms
+      64 bytes from 172.17.0.3: icmp_seq=2 ttl=64 time=0.071 ms
+
+      root@75f46da88f58:/usr/local/apache2# cat /etc/hosts
+        127.0.0.1	localhost
+        ::1	localhost ip6-localhost ip6-loopback
+        fe00::0	ip6-localnet
+        ff00::0	ip6-mcastprefix
+        ff02::1	ip6-allnodes
+        ff02::2	ip6-allrouters
+        172.17.0.3	myweb efcfd81328e6
+        172.17.0.2	75f46da88f58
+        root@75f46da88f58:/usr/local/apache2#
