@@ -191,5 +191,10 @@ Administration
       To gracefully kill containers
 
 
-Orchestration
-=============
+
+Networking
+==========
+    Container ports can be assigned explicitly or we may let Docker randomly assign one to the process.
+      P (uppercase) - random
+      p (lowercase) - explicit
+      
