@@ -241,3 +241,25 @@ Networking
         172.17.0.3	myweb efcfd81328e6
         172.17.0.2	75f46da88f58
         root@75f46da88f58:/usr/local/apache2#
+
+
+      Network disabled for a container.
+        docker run -d -P --net=none httpd
+
+      Using the host network's namespace //not the docker bridge. Reuses hosts namespace
+        docker run -d -P --net=host httpd
+
+      A container may use other container's network namespace.  
+        docker run -d -P --net=container:<container-id> httpd  
+
+
+      Docker Network
+      ==============
+        * connect container to multiple n/ws (virtual nics)
+        * create your own networks
+
+        ubuntu@ip-172-31-35-84:~$ sudo docker network ls
+          NETWORK ID          NAME                DRIVER              SCOPE
+          e5a1e4c78565        bridge              bridge              local               
+          99dc4edf390d        host                host                local               
+          054aed04d015        none                null                local               
