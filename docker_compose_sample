@@ -1,0 +1,12 @@
+mydatamysql:
+  image: mysql
+  ports:
+    - "3360"
+    - "8080"
+  environment:
+    - MYSQL_ROOT_PASSWORD=cisco
+
+testenv:
+  image: httpd
+
+  

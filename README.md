@@ -269,66 +269,66 @@ Networking
           054aed04d015        none                null                local   
 
 
-    Docker Compose
-    ==============
-      Represent deployment of multi-tier docker architecture as a text file.
-      Uses YAML to define.
+Docker Compose
+==============
+    Represent deployment of multi-tier docker architecture as a text file.
+    Uses YAML to define.
 
 
-      VOLUMES
-      ========  
-        APPs and Service types:
-          Apps are a mix of two types of services --
-              + Stateful -- maintain some data (DB)
-              + Stateless -- Webservers
+    VOLUMES
+    ========  
+      APPs and Service types:
+        Apps are a mix of two types of services --
+            + Stateful -- maintain some data (DB)
+            + Stateless -- Webservers
 
-          * Stateful services (persistent) need to maintain data across instances.
-          * Data Sharing/resources
-          * Scale up data
+        * Stateful services (persistent) need to maintain data across instances.
+        * Data Sharing/resources
+        * Scale up data
 
-      Docker uses '-v' option to mount volumes.
-
-
-    Docker Swarm
-    ============
-      Exposes several Docker Engines as single Docker Engine.
-      Serves Standard Docker API.
-
-      Docker Swarm manager (Swarm master)is designed as a P2P architecture. In production we will have > 1 Swarm Managers.
-      Docker uses Service Discovery mechanism to let containers talk to one another in two different engines.
-
-      HBASE, Kafka uses ZooKeeper. Docker also proposed the same as the lookup/service-discovery system.
-
-      Docker suggests etcd, zookeeper, consel for Service Discovery. The K-V pair is synced up in distributed environments.
+    Docker uses '-v' option to mount volumes.
 
 
-      Initialize Swarm
-      ----------------
-      #sudo docker info
-      Plugins:
-       Volume: local
-       Network: bridge host macvlan null overlay
-      Swarm: inactive
-      Runtimes: runc
+Docker Swarm
+============
+    Exposes several Docker Engines as single Docker Engine.
+    Serves Standard Docker API.
 
-      hadoop@ip-172-31-76-126:~$ sudo docker swarm init
-        Swarm initialized: current node (34sxoa0bo6izqxwulz1s7rjlz) is now a manager.
-        To add a worker to this swarm, run the following command:
-            docker swarm join \
-            --token SWMTKN-1-03ofx0s1eiilk5day0289btdyjyia9d9r834291vdtbfhjqrew-5vfjqz3har1kd244laxjhi851 \
-            172.31.76.126:2377
-        To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
-        hadoop@ip-172-31-76-126:~$
+    Docker Swarm manager (Swarm master)is designed as a P2P architecture. In production we will have > 1 Swarm Managers.
+    Docker uses Service Discovery mechanism to let containers talk to one another in two different engines.
 
-      > This swarm cluster is ONE NODE cluster.
+    HBASE, Kafka uses ZooKeeper. Docker also proposed the same as the lookup/service-discovery system.
 
-      On the 2nd machine : paste o/p of first init... (to add a new NODE to the cluster)
+    Docker suggests etcd, zookeeper, consel for Service Discovery. The K-V pair is synced up in distributed environments.
+
+
+    Initialize Swarm
+    ----------------
+    #sudo docker info
+    Plugins:
+     Volume: local
+     Network: bridge host macvlan null overlay
+    Swarm: inactive
+    Runtimes: runc
+
+    hadoop@ip-172-31-76-126:~$ sudo docker swarm init
+      Swarm initialized: current node (34sxoa0bo6izqxwulz1s7rjlz) is now a manager.
+      To add a worker to this swarm, run the following command:
           docker swarm join \
-            --token SWMTKN-1-03ofx0s1eiilk5day0289btdyjyia9d9r834291vdtbfhjqrew-5vfjqz3har1kd244laxjhi851 \
-                172.31.76.126:2377
+          --token SWMTKN-1-03ofx0s1eiilk5day0289btdyjyia9d9r834291vdtbfhjqrew-5vfjqz3har1kd244laxjhi851 \
+          172.31.76.126:2377
+      To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+      hadoop@ip-172-31-76-126:~$
 
-      Check Cluster status -- docker node ls
-        <we should see one of them as a Leader>
-        hadoop@ip-172-31-76-126:~$ sudo docker node ls
-        ID                           HOSTNAME          STATUS  AVAILABILITY  MANAGER STATUS
-        34sxoa0bo6izqxwulz1s7rjlz *  ip-172-31-76-126  Ready   Active        Leader
+    > This swarm cluster is ONE NODE cluster.
+
+    On the 2nd machine : paste o/p of first init... (to add a new NODE to the cluster)
+        docker swarm join 
+          --token SWMTKN-1-03ofx0s1eiilk5day0289btdyjyia9d9r834291vdtbfhjqrew-5vfjqz3har1kd244laxjhi851 \
+              172.31.76.126:2377
+
+    Check Cluster status -- docker node ls
+      <we should see one of them as a Leader>
+      hadoop@ip-172-31-76-126:~$ sudo docker node ls
+      ID                           HOSTNAME          STATUS  AVAILABILITY  MANAGER STATUS
+      34sxoa0bo6izqxwulz1s7rjlz *  ip-172-31-76-126  Ready   Active        Leader
