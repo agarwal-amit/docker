@@ -321,9 +321,10 @@ Docker Swarm
       hadoop@ip-172-31-76-126:~$
 
     > This swarm cluster is ONE NODE cluster.
+    > The design is based on Gossip protocol -- https://en.wikipedia.org/wiki/Gossip_protocol
 
     On the 2nd machine : paste o/p of first init... (to add a new NODE to the cluster)
-        docker swarm join 
+        docker swarm join
           --token SWMTKN-1-03ofx0s1eiilk5day0289btdyjyia9d9r834291vdtbfhjqrew-5vfjqz3har1kd244laxjhi851 \
               172.31.76.126:2377
 
@@ -332,3 +333,15 @@ Docker Swarm
       hadoop@ip-172-31-76-126:~$ sudo docker node ls
       ID                           HOSTNAME          STATUS  AVAILABILITY  MANAGER STATUS
       34sxoa0bo6izqxwulz1s7rjlz *  ip-172-31-76-126  Ready   Active        Leader
+
+    There can be multiple Managers but one Leader. There can be multiple Worker instances.
+    If Leader fails, a new one is elected.
+
+
+
+Docker Service
+==============
+    Same container with HA & Load Balancing features.
+
+    hadoop@ip-172-31-76-126:~$ sudo docker service ls
+      ID  NAME  MODE  REPLICAS  IMAGE
