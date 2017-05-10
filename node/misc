@@ -1,0 +1,23 @@
+
+Volumes + Docker
+    * We attach a volume to a container. Path qualifies as Local or Host.
+        - docker volume ls (shows the available volumes)
+            > docker volume create <name> //dbdata -> This created in the local host in the ...lib/docker/volume folder
+            > docker run -d -v dbdata:/opt  -> Attaching the volume to the container.
+
+    * Volume Driver
+        - Local driver does not allow access over n/w.
+            Possible solution is to create a n/w storage and mount on all containers. NOT recommended as this is heavy.
+        - Instead use --
+            > docker plugin ls (tells if plugin support is available)
+            > RexRay - Docker plugin by EMC - user Amazon EBS plugin
+
+Docker Datacenter
+    * Enterprise grade Docker distribution.
+    * Has a monitoring UI
+
+Cadvisor
+    * Mgmt interface opensourced by GOOG
+
+Shipyard
+    * Compatible with Docker Remote API

@@ -6,3 +6,7 @@ Next Gen App development -
     Cloud
     (DevOps) -> CI -> CD
     Docker
+
+Principles of MicServ
+    - Single responsibility per service. Advantages: version management
+    - Are autonomous. Independent of each other. 
