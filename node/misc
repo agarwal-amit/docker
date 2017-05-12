@@ -21,3 +21,6 @@ Cadvisor
 
 Shipyard
     * Compatible with Docker Remote API
+
+Portainer
+    * Lightweight
