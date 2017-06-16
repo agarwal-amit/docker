@@ -9,4 +9,5 @@ Next Gen App development -
 
 Principles of MicServ
     - Single responsibility per service. Advantages: version management
-    - Are autonomous. Independent of each other. 
+    - Are autonomous. Independent of each other.
+    
