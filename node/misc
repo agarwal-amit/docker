@@ -32,3 +32,49 @@ Resources
     https://github.com/lambci/docker-lambda
     https://www.cloudbees.com/products
     https://www.dropbox.com/home/Cisco%20Docker%20-%20Batch3
+
+
+A VM's H/w is a just a configuration file.
+The VM's OS sit on a Virtual Hard Disc (VHD)
+
+Virtual machine is something that has transform a machine into a set of files.
+
+Virtualization -> Software Defined Infrastructure
+
+An APP decoupled from machines (Browser->m/c, HTTP->transport, API->Language.. ) and turned into services.
+
+AMZN compose a VM for someone to access (like gmail for email service). Infrastructure hence became a service.
+
+Apps scaling need machine to scale to. Both are software defined. We led to Infrastructure as a Code.
+
+Requirements of an scaled App
+    . Bigger the size of a unit is , more is the importance of it being modularizes.
+    . Units be reusable.
+    . Collaboration is needed.
+    . Every unit should be maintainable in a way  it can be plugged in and plugged out.
+
+
+SOA: Breaking down a bigger service into a smaller services to that they run independently.
+
+Micro-services: Fine grain SOA with higher decoupled smaller services. A way to create 'Atomic' services...
+
+APPs -> Micro Services, Machine -> Micro Instances
+
+APPs architecture is Content Architecture, Infrastructure architecture is Container Architecture.
+
+
+Stateless Behavior
+    Any client context should not rest on the server.
+    The lesser stickiness/affinity b/w services, more the design options.
+    Design for failure.
+    ReST is architectural design. A HTTP constraint.
+    Eg. Gmail, amazon.com ..
+
+Shared - Nothing Architecture
+    Each request its own resources.
+
+Distributed Services
+    An orchestrator is needed to manage the Content/Containers. -- Kubernetes, Mesos, Swarm
+    http://www.allthingsdistributed.com/
+
+A typical containers will share Kernel and H/W -- Docker
